@@ -1,13 +1,20 @@
 import tempfile
 import unittest
 from pathlib import Path
+from importlib.util import find_spec
 
-import pandas as pd
+HAS_EXCEL_DEPS = find_spec("pandas") is not None and find_spec("openpyxl") is not None
 
-from excel_transformer import ExcelTransformationService
+if not HAS_EXCEL_DEPS:
+    pd = None
+    ExcelTransformationService = None
+else:
+    import pandas as pd
+    from excel_transformer import ExcelTransformationService
 
 
 class ExcelTransformationServiceTests(unittest.TestCase):
+    @unittest.skipIf(not HAS_EXCEL_DEPS, "pandas/openpyxl are not installed in this environment")
     def test_transform_workbook_applies_rules_and_template_order(self):
         data_df = pd.DataFrame(
             [

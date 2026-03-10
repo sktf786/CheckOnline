@@ -33,3 +33,5 @@ If `--output` is omitted, the input workbook is updated in-place.
 ```bash
 python -m unittest discover -s tests
 ```
+
+> Note: the unit test suite auto-skips when `pandas` or `openpyxl` are not installed.
